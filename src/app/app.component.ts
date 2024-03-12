@@ -10,7 +10,7 @@ import {PieComponent} from './components/charts/pie/pie.component';
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, BoxplotComponent],
+    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
