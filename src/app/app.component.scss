@@ -22,3 +22,31 @@
   border-radius: .2rem;
   box-shadow: .1rem .1rem .1rem rgba(0,0,0,0.1);
 }
+
+.filter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.season {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.season button {
+  display: block;
+  width: 50px;
+  aspect-ratio: 1;
+  background-image: url("../assets/images/season.png");
+  background-position: center;
+  background-size: contain;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.season p {
+  margin: .5em 0 0;
+}

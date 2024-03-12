@@ -25,27 +25,84 @@ export class AppComponent {
     }
 
     title_einspeisung = 'Einspeisung';
-    label_einspeisung = EnergyEntryService.MonthEnergyEntries.map(e => moment(e.Datum).format('MMM YY'));
-    data_einspeisung = EnergyEntryService.MonthEnergyEntries.map(e => e.EinspeisungSumme);
+    label_einspeisung: string[] = [];
+    data_einspeisung: number[] = [];
 
     title_bezug = 'Bezug';
-    label_bezug = EnergyEntryService.MonthEnergyEntries.map(e => moment(e.Datum).format('MMM YY'));
-    data_bezug = EnergyEntryService.MonthEnergyEntries.map(e => e.BezugSumme);
+    label_bezug: string[] = [];
+    data_bezug: number[] = [];
 
     title_pvertrag = 'PV Ertrag';
-    label_pvertrag = EnergyEntryService.MonthEnergyEntries.map(e => moment(e.Datum).format('MMM YY'));
-    data_pvertrag = EnergyEntryService.MonthEnergyEntries.map(e => e.PVSumme);
+    label_pvertrag: string[] = [];
+    data_pvertrag: number[] = [];
 
     title_pvverbrauch = 'Eigenverbrauch';
-    label_pvverbrauch = EnergyEntryService.MonthEnergyEntries.map(e => moment(e.Datum).format('MMM YY'));
-    data_pvverbrauch = EnergyEntryService.MonthEnergyEntries.map(e => e.PVVerbrauchSumme);
+    label_pvverbrauch: string[] = [];
+    data_pvverbrauch: number[] = [];
+
+    title_tagnachtvergleich = 'Tage mit Überproduktion';
+    label_tagnachtvergleich: string[] = ['Überproduktion', 'Unterproduktion'];
+    data_tagnachtvergleich: any[] = [];
+
+    season: string = 'Ganzes Jahr';
 
     constructor() {
+        this.calcValues();
     }
 
     buttonclick(): void {
         //this.title_bezug = 'Uigure';
         //this.data_pvverbrauch = EnergyEntryService.MonthEnergyEntries.map(e => e.PVKummulativ);
         //this.update = true;
+    }
+
+    changeSeason() {
+        switch (this.season) {
+            case 'Ganzes Jahr': this.season = 'Sommer'; break;
+            case 'Sommer': this.season = 'Winter'; break;
+            case 'Winter': this.season = 'Ganzes Jahr'; break;
+            default: this.season = 'Ganzes Jahr';
+        }
+        this.calcValues();
+    }
+
+    calcValues() {
+        let monthentries = EnergyEntryService.MonthEnergyEntries;
+        let dayentries = EnergyEntryService.DayEnergyEntries;
+        if (this.season === 'Winter') {
+            monthentries = EnergyEntryService.MonthEnergyEntries.filter((e) => {
+                return e.Datum.getMonth() <= 2 || e.Datum.getMonth() >= 9;
+            });
+            dayentries = EnergyEntryService.DayEnergyEntries.filter((e) => {
+                return e.Datum.getMonth() <= 2 || e.Datum.getMonth() >= 9;
+            });
+        }
+        if (this.season === 'Sommer') {
+            monthentries = EnergyEntryService.MonthEnergyEntries.filter((e) => {
+                return e.Datum.getMonth() > 2 && e.Datum.getMonth() < 9;
+            });
+            dayentries = EnergyEntryService.DayEnergyEntries.filter((e) => {
+                return e.Datum.getMonth() > 2 && e.Datum.getMonth() < 9;
+            });
+        }
+
+        this.label_einspeisung = monthentries.map(e => moment(e.Datum).format('MMM YY'));
+        this.data_einspeisung = monthentries.map(e => e.EinspeisungSumme);
+
+        this.label_bezug = monthentries.map(e => moment(e.Datum).format('MMM YY'));
+        this.data_bezug = monthentries.map(e => e.BezugSumme);
+
+        this.label_pvertrag = monthentries.map(e => moment(e.Datum).format('MMM YY'));
+        this.data_pvertrag = monthentries.map(e => e.PVSumme);
+
+        this.label_pvverbrauch = monthentries.map(e => moment(e.Datum).format('MMM YY'));
+        this.data_pvverbrauch = monthentries.map(e => e.PVVerbrauchSumme);
+
+        this.data_tagnachtvergleich = [
+            dayentries.filter(e => e.PVSumme > e.VerbrauchSumme).length,
+            dayentries.filter(e => e.PVSumme <= e.VerbrauchSumme).length
+        ];
+
+        this.update = true;
     }
 }

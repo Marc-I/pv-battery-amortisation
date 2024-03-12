@@ -32,7 +32,12 @@ export class PieComponent implements OnInit, OnChanges {
             // @ts-ignore
             this.chartOptions.xAxis![0].categories = this.label;
             this.chartOptions.series![0] = {
-                data: this.data,
+                data: this.data.map((e, i) => {
+                    return {
+                        name: this.label[i],
+                        y: e
+                    };
+                }),
                 name: this.title,
                 dataLabels: [
                     {

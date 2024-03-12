@@ -1,4 +1,19 @@
 
+<div class="c35 filter">
+    <div class="season">
+        <button (click)="changeSeason()"></button>
+        <p>{{season}}</p>
+    </div>
+    <div class="battery">
+        Batterie wählen
+    </div>
+</div>
+<app-pie
+        [title]="title_tagnachtvergleich"
+        [label]="label_tagnachtvergleich"
+        [data]="data_tagnachtvergleich"
+        [(update)]="update"
+></app-pie>
 <app-areaspline
         [title]="title_einspeisung"
         [label]="label_einspeisung"
@@ -27,5 +42,3 @@
         [(update)]="update"
         class="c35"
 ></app-line>
-
-<button (click)="buttonclick()">click</button>
