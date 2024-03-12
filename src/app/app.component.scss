@@ -1,0 +1,24 @@
+
+:host {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .5rem;
+}
+
+.c13 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.c35 {
+  grid-column-start: 3;
+  grid-column-end: 5;
+}
+
+:host > * {
+  display: block;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: .2rem;
+  box-shadow: .1rem .1rem .1rem rgba(0,0,0,0.1);
+}

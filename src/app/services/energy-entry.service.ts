@@ -52,9 +52,6 @@ export class EnergyEntryService {
     EnergyEntryService.MonthEnergyEntries.forEach(this._kummulateSums);
 
     EnergyEntryService._energyEntries = energyEntries;
-    console.log(energyEntries);
-    console.log(EnergyEntryService.DayEnergyEntries);
-    console.log(EnergyEntryService.MonthEnergyEntries);
   }
 
   private _sumValues = (res: DayEnergyEntry|MonthEnergyEntry, value: EnergyEntry) => {
