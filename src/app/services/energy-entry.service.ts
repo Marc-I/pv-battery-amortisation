@@ -11,6 +11,7 @@ export class EnergyEntryService {
 
   private static _energyEntries: EnergyEntry[];
 
+  public static get EnergyEntries(): EnergyEntry[] { return this._energyEntries; }
   public static DayEnergyEntries: DayEnergyEntry[] = [];
   public static MonthEnergyEntries: MonthEnergyEntry[] = [];
 

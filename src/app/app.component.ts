@@ -6,11 +6,14 @@ import moment from 'moment';
 import {AreasplineComponent} from './components/charts/areaspline/areaspline.component';
 import {LineComponent} from './components/charts/line/line.component';
 import {PieComponent} from './components/charts/pie/pie.component';
+import {FullBatteryPieComponent} from './components/full-battery-pie/full-battery-pie.component';
+import {batteries, DashboardFilter, enSeason} from './models/dashboard-filter';
+import {Battery} from './models/battery';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent],
+    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, FullBatteryPieComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
@@ -23,6 +26,9 @@ export class AppComponent {
     set update(value: boolean) {
         this._update = value;
     }
+
+    filter: DashboardFilter = new DashboardFilter();
+    batteries: Battery[] = batteries;
 
     title_einspeisung = 'Einspeisung';
     label_einspeisung: string[] = [];
@@ -44,47 +50,35 @@ export class AppComponent {
     label_tagnachtvergleich: string[] = ['Überproduktion', 'Unterproduktion'];
     data_tagnachtvergleich: any[] = [];
 
-    season: string = 'Ganzes Jahr';
-
     constructor() {
         this.calcValues();
     }
 
-    buttonclick(): void {
-        //this.title_bezug = 'Uigure';
-        //this.data_pvverbrauch = EnergyEntryService.MonthEnergyEntries.map(e => e.PVKummulativ);
-        //this.update = true;
-    }
-
     changeSeason() {
-        switch (this.season) {
-            case 'Ganzes Jahr': this.season = 'Sommer'; break;
-            case 'Sommer': this.season = 'Winter'; break;
-            case 'Winter': this.season = 'Ganzes Jahr'; break;
-            default: this.season = 'Ganzes Jahr';
+        switch (this.filter.season) {
+            case enSeason.YEAR: this.filter.season = enSeason.SUMMER; break;
+            case enSeason.SUMMER: this.filter.season = enSeason.WINTER; break;
+            case enSeason.WINTER: this.filter.season = enSeason.YEAR; break;
+            default: this.filter.season = enSeason.YEAR;
         }
         this.calcValues();
+        this.filter = new DashboardFilter(this.filter);
+    }
+
+    changeBattery() {
+        this.filter = new DashboardFilter(this.filter);
     }
 
     calcValues() {
-        let monthentries = EnergyEntryService.MonthEnergyEntries;
-        let dayentries = EnergyEntryService.DayEnergyEntries;
-        if (this.season === 'Winter') {
-            monthentries = EnergyEntryService.MonthEnergyEntries.filter((e) => {
-                return e.Datum.getMonth() <= 2 || e.Datum.getMonth() >= 9;
-            });
-            dayentries = EnergyEntryService.DayEnergyEntries.filter((e) => {
-                return e.Datum.getMonth() <= 2 || e.Datum.getMonth() >= 9;
-            });
+        let filter = (e: { Datum: Date }) => true;
+        if (this.filter.season === enSeason.WINTER) {
+            filter = (e: { Datum: Date }) => e.Datum.getMonth() <= 2 || e.Datum.getMonth() >= 9;
         }
-        if (this.season === 'Sommer') {
-            monthentries = EnergyEntryService.MonthEnergyEntries.filter((e) => {
-                return e.Datum.getMonth() > 2 && e.Datum.getMonth() < 9;
-            });
-            dayentries = EnergyEntryService.DayEnergyEntries.filter((e) => {
-                return e.Datum.getMonth() > 2 && e.Datum.getMonth() < 9;
-            });
+        if (this.filter.season === enSeason.SUMMER) {
+            filter = (e: { Datum: Date }) => e.Datum.getMonth() > 2 && e.Datum.getMonth() < 9;
         }
+        let monthentries = EnergyEntryService.MonthEnergyEntries.filter(this.filter.seasonFilter);
+        let dayentries = EnergyEntryService.DayEnergyEntries.filter(filter);
 
         this.label_einspeisung = monthentries.map(e => moment(e.Datum).format('MMM YY'));
         this.data_einspeisung = monthentries.map(e => e.EinspeisungSumme);
@@ -105,4 +99,5 @@ export class AppComponent {
 
         this.update = true;
     }
+
 }
