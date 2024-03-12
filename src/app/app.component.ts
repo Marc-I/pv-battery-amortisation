@@ -9,11 +9,13 @@ import {PieComponent} from './components/charts/pie/pie.component';
 import {FullBatteryPieComponent} from './components/full-battery-pie/full-battery-pie.component';
 import {batteries, DashboardFilter, enSeason} from './models/dashboard-filter';
 import {Battery} from './models/battery';
+import {FormsModule} from '@angular/forms';
+import {HighConsumerComponent} from './components/high-consumer/high-consumer.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, FullBatteryPieComponent],
+    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, FullBatteryPieComponent, FormsModule, HighConsumerComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
@@ -30,21 +32,10 @@ export class AppComponent {
     filter: DashboardFilter = new DashboardFilter();
     batteries: Battery[] = batteries;
 
-    title_einspeisung = 'Einspeisung';
-    label_einspeisung: string[] = [];
-    data_einspeisung: number[] = [];
-
-    title_bezug = 'Bezug';
-    label_bezug: string[] = [];
-    data_bezug: number[] = [];
-
-    title_pvertrag = 'PV Ertrag';
-    label_pvertrag: string[] = [];
-    data_pvertrag: number[] = [];
-
-    title_pvverbrauch = 'Eigenverbrauch';
-    label_pvverbrauch: string[] = [];
-    data_pvverbrauch: number[] = [];
+    title_vergleich = 'PV-Erzeugung und Verbrauch';
+    label_vergleich: string[] = [];
+    serienames_vergleich: string[] = ['Erzeugung', 'Verbrauch'];
+    data_vergleich: number[][] = [];
 
     title_tagnachtvergleich = 'Tage mit Überproduktion';
     label_tagnachtvergleich: string[] = ['Überproduktion', 'Unterproduktion'];
@@ -77,20 +68,14 @@ export class AppComponent {
         if (this.filter.season === enSeason.SUMMER) {
             filter = (e: { Datum: Date }) => e.Datum.getMonth() > 2 && e.Datum.getMonth() < 9;
         }
-        let monthentries = EnergyEntryService.MonthEnergyEntries.filter(this.filter.seasonFilter);
+        let monthentries = EnergyEntryService.MonthEnergyEntries.filter(filter);
         let dayentries = EnergyEntryService.DayEnergyEntries.filter(filter);
 
-        this.label_einspeisung = monthentries.map(e => moment(e.Datum).format('MMM YY'));
-        this.data_einspeisung = monthentries.map(e => e.EinspeisungSumme);
-
-        this.label_bezug = monthentries.map(e => moment(e.Datum).format('MMM YY'));
-        this.data_bezug = monthentries.map(e => e.BezugSumme);
-
-        this.label_pvertrag = monthentries.map(e => moment(e.Datum).format('MMM YY'));
-        this.data_pvertrag = monthentries.map(e => e.PVSumme);
-
-        this.label_pvverbrauch = monthentries.map(e => moment(e.Datum).format('MMM YY'));
-        this.data_pvverbrauch = monthentries.map(e => e.PVVerbrauchSumme);
+        this.label_vergleich = monthentries.map(e => moment(e.Datum).format('MMM YY'));
+        this.data_vergleich = [
+            monthentries.map(e => e.PVKummulativ),
+            monthentries.map(e => e.VerbrauchKummulativ)
+        ];
 
         this.data_tagnachtvergleich = [
             dayentries.filter(e => e.PVSumme > e.VerbrauchSumme).length,

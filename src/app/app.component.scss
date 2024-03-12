@@ -1,7 +1,7 @@
 
 :host {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: .5rem;
 }
 
@@ -10,22 +10,50 @@
   grid-column-end: 3;
 }
 
+.c15 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+}
+
+.c16 {
+  grid-column-start: 1;
+  grid-column-end: 6;
+}
+
+.c24 {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
 .c35 {
   grid-column-start: 3;
   grid-column-end: 5;
 }
 
+.c36 {
+  grid-column-start: 3;
+  grid-column-end: 6;
+}
+
+.c46 {
+  grid-column-start: 4;
+  grid-column-end: 6;
+}
+
 :host > * {
-  display: block;
   padding: 2rem;
   border: 1px solid #ddd;
   border-radius: .2rem;
   box-shadow: .1rem .1rem .1rem rgba(0,0,0,0.1);
 }
 
+.vergleich::ng-deep highcharts-chart {
+  height: 400px;
+}
+
 .filter {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 2fr 3fr 2fr 3fr;
 }
 
 .season {

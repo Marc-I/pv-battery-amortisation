@@ -4,11 +4,13 @@ import {PieComponent} from '../charts/pie/pie.component';
 import {EnergyEntryService} from '../../services/energy-entry.service';
 import {BatteryEnergyEntry} from '../../models/battery-energy-entry';
 import {BatteryEnergyDayentry} from '../../models/battery-energy-dayentry';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-full-battery-pie',
   standalone: true,
   imports: [
+    CommonModule,
     PieComponent
   ],
   templateUrl: './full-battery-pie.component.html',
@@ -27,6 +29,19 @@ export class FullBatteryPieComponent implements OnChanges {
 
   allEntries: BatteryEnergyEntry[];
   dayEntries: BatteryEnergyDayentry[];
+  batterySavings: number;
+
+  get total(): number {
+    return (
+        (this.batterySavings / 1000 * this._filter.battery_efficency * this._filter.price_from_net)
+        -
+        (this.batterySavings / 1000 * this._filter.price_to_net)
+    );
+  }
+
+  get amortisation(): number {
+    return this.filter.battery.price / (this.total / this.dayEntries.length * 365);
+  }
 
   constructor() {
     this.calculation();
@@ -36,7 +51,6 @@ export class FullBatteryPieComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let battery = this._filter.battery;
     let efficency = this._filter.battery_efficency;
-    // console.log(battery, changes['filter']?.currentValue?.battery)
     this._filter = new DashboardFilter(this.filter);
     if (
         changes['filter']?.currentValue?.battery != battery ||
@@ -53,9 +67,10 @@ export class FullBatteryPieComponent implements OnChanges {
     let dayEntries: any = {};
     const daysWithFullBattery: string[] = [];
     const totalDays: string[] = [];
+    let savedEnergy = 0;
     EnergyEntryService.EnergyEntries.forEach((e, i) => {
-      let addEnergy = Math.max(0, e.PVErtrag - e.Verbrauch) * this._filter.battery_efficency;
-      capacity = Math.min(capacity + addEnergy, this._filter.battery.max);
+      let addEnergy = Math.max(0, e.PVErtrag - e.Verbrauch);
+      capacity = Math.min(capacity + addEnergy * this._filter.battery_efficency, this._filter.battery.max);
       const day = e.Datum.toLocaleDateString();
       if (totalDays.indexOf(day) < 0) {
         totalDays.push(day);
@@ -66,8 +81,10 @@ export class FullBatteryPieComponent implements OnChanges {
         }
       }
       capacity -= Math.min(capacity, e.Bezug);
+      savedEnergy += Math.min(capacity, e.Bezug);
       let bee = new BatteryEnergyEntry(e);
       bee.BatterieKapazitaet = capacity;
+      bee.BatterieEinsparung = savedEnergy;
       this.allEntries.push(bee);
 
       if (!dayEntries[day]) {
@@ -77,14 +94,16 @@ export class FullBatteryPieComponent implements OnChanges {
       if (capacity === this._filter.battery.max) {
         dayEntries[day].WarVoll = true;
       }
+      dayEntries[day].BatterieEinsparung = savedEnergy;
     });
     this.dayEntries = Object.values(dayEntries);
+    this.batterySavings = savedEnergy;
   }
 
   calcValues() {
     this.data = [
-      this.dayEntries.filter(e => e.WarVoll).length,
-      this.dayEntries.filter(e => !e.WarVoll).length
+      this.dayEntries.filter(e => e.WarVoll).filter(this._filter.seasonFilter).length,
+      this.dayEntries.filter(e => !e.WarVoll).filter(this._filter.seasonFilter).length
     ];
     this.update = true;
   }

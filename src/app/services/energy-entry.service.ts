@@ -3,6 +3,7 @@ import {EnergyEntry} from '../models/energy-entry';
 import {ApiService} from './api.service';
 import {DayEnergyEntry} from '../models/day-energy-entry';
 import {MonthEnergyEntry} from '../models/month-energy-entry';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class EnergyEntryService {
   public static get EnergyEntries(): EnergyEntry[] { return this._energyEntries; }
   public static DayEnergyEntries: DayEnergyEntry[] = [];
   public static MonthEnergyEntries: MonthEnergyEntry[] = [];
+  public static LastMonthEnergyEntries: EnergyEntry[] = [];
 
   constructor(private _apiService: ApiService) {
   }
@@ -53,6 +55,8 @@ export class EnergyEntryService {
     EnergyEntryService.MonthEnergyEntries.forEach(this._kummulateSums);
 
     EnergyEntryService._energyEntries = energyEntries;
+    let oneWeekAgo = moment().subtract(1, 'month');
+    EnergyEntryService.LastMonthEnergyEntries = energyEntries.filter((e: EnergyEntry) => moment(e.Datum).isSameOrAfter(oneWeekAgo, 'month'));
   }
 
   private _sumValues = (res: DayEnergyEntry|MonthEnergyEntry, value: EnergyEntry) => {

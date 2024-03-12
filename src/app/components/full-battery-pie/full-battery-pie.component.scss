@@ -1,0 +1,18 @@
+
+:host {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+table {
+  width: 200px;
+  font-size: 0.7em;
+
+  th {
+    text-align: left;
+  }
+
+  td {
+    text-align: right;
+  }
+}

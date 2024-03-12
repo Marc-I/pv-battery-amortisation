@@ -5,3 +5,29 @@
         [data]="data"
         [(update)]="update"
 ></app-pie>
+<table>
+    <tr>
+        <th>gesparte Energie</th>
+        <td>{{(batterySavings/1000) | number:'1.0-0'}} kWh</td>
+    </tr>
+    <tr>
+        <th>Vergütung</th>
+        <td>{{(-batterySavings/1000*filter.price_to_net) | number:'1.0-2'}} CHF</td>
+    </tr>
+    <tr>
+        <th>Einsparung</th>
+        <td>{{(batterySavings/1000*filter.battery_efficency*filter.price_from_net) | number:'1.0-2'}} CHF</td>
+    </tr>
+    <tr>
+        <th>Total</th>
+        <td>{{total | number:'1.0-2'}} CHF</td>
+    </tr>
+    <tr>
+        <th>Anschaffungskosten</th>
+        <td>{{filter.battery.price | number:'1.0-2'}} CHF</td>
+    </tr>
+    <tr>
+        <th>Amortisationsdauer</th>
+        <td>{{amortisation | number:'1.0-2'}} Jahre</td>
+    </tr>
+</table>

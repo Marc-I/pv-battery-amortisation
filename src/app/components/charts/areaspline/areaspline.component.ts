@@ -18,7 +18,9 @@ export class AreasplineComponent implements OnInit, OnChanges {
     @Input()
     label: string[];
     @Input()
-    data: number[];
+    serienames: string[];
+    @Input()
+    data: number[]|number[][];
     @Input()
     update: boolean;
     @Output()
@@ -31,14 +33,28 @@ export class AreasplineComponent implements OnInit, OnChanges {
             this.chartOptions.title!.text = this.title;
             // @ts-ignore
             this.chartOptions.xAxis![0].categories = this.label;
-            this.chartOptions.series![0] = {
-                data: this.data,
-                name: this.title,
-                marker: {
-                    enabled: false
-                },
-                type: 'areaspline'
-            };
+            if (typeof this.data[0] === 'object') {
+                // @ts-ignore
+                this.data.forEach((e: number[], i) => {
+                    this.chartOptions.series![i] = {
+                        data: e,
+                        name: this.serienames && this.serienames[i] ? this.serienames[i] : this.title,
+                        marker: {
+                            enabled: false
+                        },
+                        type: 'areaspline'
+                    };
+                });
+            } else {
+                this.chartOptions.series![0] = {
+                    data: this.data,
+                    name: this.title,
+                    marker: {
+                        enabled: false
+                    },
+                    type: 'areaspline'
+                };
+            }
         }
         this.updateChange.emit(value);
         this._updateFlag = value;
