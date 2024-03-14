@@ -2,10 +2,12 @@
 .wrapper {
   position: fixed;
   inset: 0;
-  background-color: rgba(255, 255, 255, 0.5);
+  padding-bottom: 4%;
+  background-color: rgba(200, 200, 200, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999999;
 }
 
 .lds-ring {

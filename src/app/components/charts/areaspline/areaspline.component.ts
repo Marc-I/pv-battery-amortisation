@@ -62,7 +62,7 @@ export class AreasplineComponent implements OnInit, OnChanges {
     Highcharts: typeof Highcharts = Highcharts;
     chartOptions: Highcharts.Options = {
         title: {text: ''},
-        legend: {enabled: false},
+        legend: {enabled: true},
         xAxis: [{categories: []}],
         yAxis: [{title: {text: ''}}],
         series: [{
