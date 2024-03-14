@@ -5,6 +5,7 @@ import {EnergyEntryService} from '../../services/energy-entry.service';
 import {BatteryEnergyEntry} from '../../models/battery-energy-entry';
 import {BatteryEnergyDayentry} from '../../models/battery-energy-dayentry';
 import {CommonModule} from '@angular/common';
+import {LoadingService} from '../../services/loading.service';
 
 @Component({
   selector: 'app-full-battery-pie',
@@ -31,6 +32,8 @@ export class FullBatteryPieComponent implements OnChanges {
   dayEntries: BatteryEnergyDayentry[] = [];
   batterySavings: number;
 
+  private _loadingId = 'full-battery-pie-component';
+
   get total(): number {
     return (
       (this.batterySavings / 1000 * this._filter.battery_efficency * this._filter.price_from_net)
@@ -44,14 +47,17 @@ export class FullBatteryPieComponent implements OnChanges {
   }
 
   constructor() {
+    LoadingService.start_async(this._loadingId + '_constructor');
     this.calculation();
     this.calcValues();
+    LoadingService.stop_async(this._loadingId + '_constructor');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     let battery = this._filter.battery;
     let efficency = this._filter.battery_efficency;
     this._filter = new DashboardFilter(this.filter);
+    LoadingService.start_async(this._loadingId + '_changes');
     if (
       changes['filter']?.currentValue?.battery != battery ||
       changes['filter']?.currentValue?.battery_efficency != efficency
@@ -59,9 +65,11 @@ export class FullBatteryPieComponent implements OnChanges {
       setTimeout(() => {
         this.calculation();
         this.calcValues();
+        LoadingService.stop_async(this._loadingId + '_changes');
       }, 100);
     } else {
       this.calcValues();
+      LoadingService.stop_async(this._loadingId + '_changes');
     }
   }
 

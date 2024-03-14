@@ -11,11 +11,12 @@ import {batteries, DashboardFilter, enSeason} from './models/dashboard-filter';
 import {Battery} from './models/battery';
 import {FormsModule} from '@angular/forms';
 import {HighConsumerComponent} from './components/high-consumer/high-consumer.component';
+import {LoadingOverlayComponent} from './components/loading-overlay/loading-overlay.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, FullBatteryPieComponent, FormsModule, HighConsumerComponent],
+  imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, FullBatteryPieComponent, FormsModule, HighConsumerComponent, LoadingOverlayComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
