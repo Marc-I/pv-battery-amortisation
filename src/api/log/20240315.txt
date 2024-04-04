@@ -1,0 +1,28 @@
+08:25:52
+404 Page not Found - API Endpoint not found
+{
+    "URL": "http:\/\/localhost:4281\/api\/",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+08:26:00
+404 Page not Found - API Endpoint not found
+{
+    "URL": "http:\/\/localhost:4281\/api\/batteries",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        "batteries"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "batteries",
+    "DATA": null
+}
+#################################################################

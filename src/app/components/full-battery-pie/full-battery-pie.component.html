@@ -11,11 +11,11 @@
         <td>{{(batterySavings/1000) | number:'1.0-0'}} kWh</td>
     </tr>
     <tr>
-        <th>Vergütung</th>
+        <th>Vergütung <span class="info">ℹ<span>Die Vergütung, die durch die Einspeisung in die Batterie statt ins Netz weniger ausgezahlt wird.</span></span></th>
         <td>{{(-batterySavings/1000*filter.price_to_net) | number:'1.0-2'}} CHF</td>
     </tr>
     <tr>
-        <th>Einsparung</th>
+        <th>Einsparung <span class="info">ℹ<span>Einsparung durch nicht bezogenen Strom aus dem Netz.</span></span></th>
         <td>{{(batterySavings/1000*filter.battery_efficency*filter.price_from_net) | number:'1.0-2'}} CHF</td>
     </tr>
     <tr>
