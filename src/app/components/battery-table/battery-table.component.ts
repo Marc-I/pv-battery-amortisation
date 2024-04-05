@@ -1,23 +1,21 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {DecimalPipe} from '@angular/common';
 import {DashboardFilter} from '../../models/dashboard-filter';
-import {PieComponent} from '../charts/pie/pie.component';
-import {EnergyEntryService} from '../../services/energy-entry.service';
 import {BatteryEnergyEntry} from '../../models/battery-energy-entry';
 import {BatteryEnergyDayentry} from '../../models/battery-energy-dayentry';
-import {CommonModule} from '@angular/common';
 import {LoadingService} from '../../services/loading.service';
+import {EnergyEntryService} from '../../services/energy-entry.service';
 
 @Component({
-  selector: 'app-full-battery-pie',
+  selector: 'app-battery-table',
   standalone: true,
   imports: [
-    CommonModule,
-    PieComponent
+    DecimalPipe
   ],
-  templateUrl: './full-battery-pie.component.html',
-  styleUrl: './full-battery-pie.component.scss'
+  templateUrl: './battery-table.component.html',
+  styleUrl: './battery-table.component.scss'
 })
-export class FullBatteryPieComponent implements OnChanges {
+export class BatteryTableComponent implements OnChanges {
 
   private _filter: DashboardFilter = new DashboardFilter();
   @Input()
@@ -33,6 +31,18 @@ export class FullBatteryPieComponent implements OnChanges {
   batterySavings: number;
 
   private _loadingId = 'full-battery-pie-component';
+
+  get total(): number {
+    return (
+      (this.batterySavings / 1000 * this._filter.battery_efficency * this._filter.price_from_net)
+      -
+      (this.batterySavings / 1000 * this._filter.price_to_net)
+    );
+  }
+
+  get amortisation(): number {
+    return this.filter.battery.price / (this.total / this.dayEntries.length * 365);
+  }
 
   constructor() {
     LoadingService.start_async(this._loadingId + '_constructor');

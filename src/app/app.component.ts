@@ -12,11 +12,12 @@ import {Battery} from './models/battery';
 import {FormsModule} from '@angular/forms';
 import {HighConsumerComponent} from './components/high-consumer/high-consumer.component';
 import {LoadingOverlayComponent} from './components/loading-overlay/loading-overlay.component';
+import {BatteryTableComponent} from './components/battery-table/battery-table.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-  imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, FullBatteryPieComponent, FormsModule, HighConsumerComponent, LoadingOverlayComponent],
+    imports: [CommonModule, RouterOutlet, AreasplineComponent, LineComponent, PieComponent, FullBatteryPieComponent, BatteryTableComponent, FormsModule, HighConsumerComponent, LoadingOverlayComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
@@ -46,16 +47,22 @@ export class AppComponent {
         this.calcValues();
     }
 
-    changeSeason() {
-        switch (this.filter.season) {
-            case enSeason.YEAR: this.filter.season = enSeason.SUMMER; break;
-            case enSeason.SUMMER: this.filter.season = enSeason.WINTER; break;
-            case enSeason.WINTER: this.filter.season = enSeason.YEAR; break;
-            default: this.filter.season = enSeason.YEAR;
-        }
-        this.calcValues();
-        this.filter = new DashboardFilter(this.filter);
+    season: enSeason = enSeason.YEAR;
+    changeSeasonSelect() {
+      this.filter.season = this.season;
+      this.calcValues();
+      this.filter = new DashboardFilter(this.filter);
     }
+    // changeSeason() {
+    //     switch (this.filter.season) {
+    //         case enSeason.YEAR: this.filter.season = enSeason.SUMMER; break;
+    //         case enSeason.SUMMER: this.filter.season = enSeason.WINTER; break;
+    //         case enSeason.WINTER: this.filter.season = enSeason.YEAR; break;
+    //         default: this.filter.season = enSeason.YEAR;
+    //     }
+    //     this.calcValues();
+    //     this.filter = new DashboardFilter(this.filter);
+    // }
 
     changeBattery() {
         this.filter = new DashboardFilter(this.filter);

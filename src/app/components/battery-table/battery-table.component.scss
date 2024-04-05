@@ -1,0 +1,62 @@
+
+:host {
+  display: grid;
+  border: 2px solid #66f !important;
+}
+
+table {
+  width: 100%;
+  font-size: 0.7em;
+
+  th {
+    text-align: left;
+  }
+
+  td {
+    text-align: right;
+
+    &.revenue {
+      border-top: 1px solid #999;
+      border-bottom: 3px double #999;
+    }
+  }
+}
+
+.amortisation {
+  padding: .2em .4em;
+  font-size: 2em;
+  color: #fff;
+  background-color: #900;
+  border-radius: .5em;
+
+  &.pos {
+    background-color: #390;
+  }
+}
+
+.info {
+  position: relative;
+  display: inline-block;
+  background-color: #ccc;
+  color: #fff;
+  padding: .0em .3em;
+  border-radius: 1em;
+  cursor: help;
+
+  span {
+    display: none;
+    width: 150px;
+    position: absolute;
+    inset: 70% auto auto 70%;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #eee;
+    z-index: 99;
+    padding: .5em;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.75);
+  }
+
+  &:hover span {
+    display: block;
+  }
+}

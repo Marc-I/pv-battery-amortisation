@@ -6,8 +6,14 @@
 
 <div class="c36 filter">
   <div class="season">
-    <button (click)="changeSeason()"></button>
-    <p>{{filter.season}}</p>
+    <b>Zeitraum</b><br>
+    <select [(ngModel)]="season" (change)="changeSeasonSelect()">
+      <option value="Ganzes Jahr">alle Daten</option>
+      <option value="Sommer">Jul '23 - Sep '23</option>
+      <option value="Winter">Oct '23 - Mar '24</option>
+    </select>
+<!--    <button (click)="changeSeason()"></button>-->
+<!--    <p>{{filter.season}}</p>-->
   </div>
   <div class="battery">
     <b>Batterie</b><br>
@@ -48,8 +54,12 @@
 ></app-pie>
 <app-full-battery-pie
   [filter]="filter"
-  class="c24"
+  class="c23"
 ></app-full-battery-pie>
+<app-battery-table
+  [filter]="filter"
+  class="c34"
+></app-battery-table>
 <app-areaspline
   [title]="title_vergleich"
   [label]="label_vergleich"

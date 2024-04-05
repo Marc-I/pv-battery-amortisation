@@ -20,8 +20,18 @@
   grid-column-end: 6;
 }
 
+.c23 {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
 .c24 {
   grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.c34 {
+  grid-column-start: 3;
   grid-column-end: 4;
 }
 
@@ -60,24 +70,24 @@ h1, h2 {
   grid-template-columns: 2fr 3fr 2fr 3fr;
 }
 
-.season {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.season button {
-  display: block;
-  width: 50px;
-  aspect-ratio: 1;
-  background-image: url("../assets/images/season.png");
-  background-position: center;
-  background-size: contain;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
+//.season {
+//  display: flex;
+//  flex-direction: column;
+//  justify-content: center;
+//  align-items: center;
+//}
+//
+//.season button {
+//  display: block;
+//  width: 50px;
+//  aspect-ratio: 1;
+//  background-image: url("../assets/images/season.png");
+//  background-position: center;
+//  background-size: contain;
+//  background-color: transparent;
+//  border: none;
+//  cursor: pointer;
+//}
 
 .season p {
   margin: .5em 0 0;
