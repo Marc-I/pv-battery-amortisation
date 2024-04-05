@@ -23,7 +23,7 @@ export class FullBatteryPieComponent implements OnChanges {
   @Input()
   filter: DashboardFilter;
 
-  title: string = 'Batterie';
+  title: string = 'Tage mit voller Batterie';
   label: string[] = ['Batterie voll', 'Batterie nicht ganz voll'];
   data: any[] = [1, 1];
   update: boolean = false;

@@ -29,10 +29,11 @@ export class HighConsumerComponent implements OnChanges {
         type: 'x'
       }
     },
-    title: {text: 'Grossverbraucher'},
+    title: {text: 'Grossverbraucher und Batterie-Auslastung'},
     legend: {enabled: true},
     xAxis: [{
-      categories: EnergyEntryService.LastMonthEnergyEntries.map(e => e.Datum.toLocaleDateString())
+      tickInterval: 288,
+      categories: EnergyEntryService.LastMonthEnergyEntries.map(e => e.Datum.toLocaleDateString()),
     }],
     yAxis: [{title: {text: ''}}],
     series: [
