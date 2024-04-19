@@ -1,0 +1,15 @@
+<h1>API Documentations</h1>
+
+<p>Base URL: {{apiBaseUrl}}</p>
+
+<div class="apiblock" *ngFor="let doc of docs" [class]="doc.type">
+  <header (click)="doc.toggle = !doc.toggle">
+    <span class="type">{{doc.type}}</span>
+    <span class="url">{{doc.url}}</span>
+    <span class="title">{{doc.title}}</span>
+  </header>
+  <main [class.open]="doc.toggle" *ngIf="doc.description">
+    {{doc.description}}
+  </main>
+</div>
+

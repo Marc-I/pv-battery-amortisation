@@ -1,0 +1,94 @@
+
+:host {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .5rem;
+}
+
+.c13 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.c15 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+}
+
+.c16 {
+  grid-column-start: 1;
+  grid-column-end: 6;
+}
+
+.c23 {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.c24 {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.c34 {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.c35 {
+  grid-column-start: 3;
+  grid-column-end: 5;
+}
+
+.c36 {
+  grid-column-start: 3;
+  grid-column-end: 6;
+}
+
+.c46 {
+  grid-column-start: 4;
+  grid-column-end: 6;
+}
+
+:host > * {
+  padding: 1rem 2rem;
+  border: 1px solid #ddd;
+  border-radius: .2rem;
+  box-shadow: .1rem .1rem .1rem rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+.vergleich::ng-deep highcharts-chart {
+  height: 400px;
+}
+
+.filter {
+  display: grid;
+  grid-template-columns: 2fr 3fr 2fr 3fr;
+}
+
+//.season {
+//  display: flex;
+//  flex-direction: column;
+//  justify-content: center;
+//  align-items: center;
+//}
+//
+//.season button {
+//  display: block;
+//  width: 50px;
+//  aspect-ratio: 1;
+//  background-image: url("../assets/images/season.png");
+//  background-position: center;
+//  background-size: contain;
+//  background-color: transparent;
+//  border: none;
+//  cursor: pointer;
+//}
+
+.season p {
+  margin: .5em 0 0;
+}
