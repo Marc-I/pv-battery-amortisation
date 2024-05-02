@@ -33,10 +33,12 @@ try {
       Response::SUCCESS(Energy::GetDayEntries($REQUEST->PARAMS[1], $REQUEST->PARAMS[2]));
       break;
     case 'ping':
+      Log::Write('index.php - ping', $REQUEST);
       RESPONSE::SUCCESS(["servertime" => microtime(true)]);
       break;
     default:
-      RESPONSE::ERROR_404('API Endpoint not found');
+      Log::Write('index.php - 404', $REQUEST);
+      RESPONSE::ERROR_404('API Endpoint "'.$REQUEST->ROOT_PARAM.'" not found');
   }
 } catch (Exception $ex) {
   Log::Write('index.php - try-catch-error', $ex);

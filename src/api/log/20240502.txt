@@ -1,0 +1,228 @@
+17:29:16
+404 Page not Found - API Endpoint not found
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": "https:\/\/iten-web.ch\/batteriespeicher\/api-documentations",
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+17:29:56
+404 Page not Found - API Endpoint not found
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+17:30:39
+404 Page not Found - API Endpoint "" not found
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+17:31:29
+index.php - 404
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+17:31:29
+404 Page not Found - API Endpoint "" not found
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+17:38:02
+index.php - 404
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+17:38:02
+404 Page not Found - API Endpoint "" not found
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        ""
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "",
+    "DATA": null
+}
+#################################################################
+17:39:27
+index.php - 404
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        "batteriespeicher",
+        "api",
+        "ping3"
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "batteriespeicher",
+    "DATA": null
+}
+#################################################################
+17:39:27
+404 Page not Found - API Endpoint "batteriespeicher" not found
+{
+    "URL": "https:\/\/iten-web.ch\/batteriespeicher\/api\/ping",
+    "REFERER": null,
+    "METHOD": "GET",
+    "PARAMS": [
+        "batteriespeicher",
+        "api",
+        "ping3"
+    ],
+    "QUERY": [],
+    "ROOT_PARAM": "batteriespeicher",
+    "DATA": null
+}
+#################################################################
+15:43:17
+index.php - 404
+{
+    "URL": "http:\/\/localhost:4281\/api\/ping",
+    "REFERER": "http:\/\/localhost:4200\/",
+    "METHOD": "GET",
+    "PARAMS": [
+        "ping2"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "ping2",
+    "DATA": null
+}
+#################################################################
+15:43:17
+404 Page not Found - API Endpoint "ping2" not found
+{
+    "URL": "http:\/\/localhost:4281\/api\/ping",
+    "REFERER": "http:\/\/localhost:4200\/",
+    "METHOD": "GET",
+    "PARAMS": [
+        "ping2"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "ping2",
+    "DATA": null
+}
+#################################################################
+15:43:19
+index.php - 404
+{
+    "URL": "http:\/\/localhost:4281\/api\/ping",
+    "REFERER": "http:\/\/localhost:4200\/",
+    "METHOD": "GET",
+    "PARAMS": [
+        "ping2"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "ping2",
+    "DATA": null
+}
+#################################################################
+15:43:19
+404 Page not Found - API Endpoint "ping2" not found
+{
+    "URL": "http:\/\/localhost:4281\/api\/ping",
+    "REFERER": "http:\/\/localhost:4200\/",
+    "METHOD": "GET",
+    "PARAMS": [
+        "ping2"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "ping2",
+    "DATA": null
+}
+#################################################################
+15:43:26
+index.php - 404
+{
+    "URL": "http:\/\/localhost:4281\/api\/ping",
+    "REFERER": "http:\/\/localhost:4200\/",
+    "METHOD": "GET",
+    "PARAMS": [
+        "ping2"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "ping2",
+    "DATA": null
+}
+#################################################################
+15:43:26
+404 Page not Found - API Endpoint "ping2" not found
+{
+    "URL": "http:\/\/localhost:4281\/api\/ping",
+    "REFERER": "http:\/\/localhost:4200\/",
+    "METHOD": "GET",
+    "PARAMS": [
+        "ping2"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "ping2",
+    "DATA": null
+}
+#################################################################
+15:43:40
+index.php - ping
+{
+    "URL": "http:\/\/localhost:4281\/api\/ping",
+    "REFERER": "http:\/\/localhost:4200\/",
+    "METHOD": "GET",
+    "PARAMS": [
+        "ping"
+    ],
+    "QUERY": null,
+    "ROOT_PARAM": "ping",
+    "DATA": null
+}
+#################################################################

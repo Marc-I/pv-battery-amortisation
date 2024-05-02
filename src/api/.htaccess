@@ -3,5 +3,5 @@ RewriteEngine On
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule (.*) /index.php [QSA,L,PT,E=ORIGINAL_PATH:/$1]
+RewriteRule (.*) ./index.php [QSA,L,PT,E=ORIGINAL_PATH:/$1]
 </IfModule>

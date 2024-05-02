@@ -63,12 +63,20 @@ class REQUEST {
         if (!isset($_SERVER['PATH_INFO']) || !$_SERVER['PATH_INFO']) {
             if (isset($_SERVER['REDIRECT_ORIGINAL_PATH']) && $_SERVER['REDIRECT_ORIGINAL_PATH']) {
                 $path_info = $_SERVER['REDIRECT_ORIGINAL_PATH'];
+            } else {
+              $path_info = $_SERVER['REQUEST_URI'];
             }
         } else {
             $path_info = $_SERVER['PATH_INFO'];
         }
 
         $this->PARAMS = explode('/', trim($path_info, '/'));
+        if ($this->PARAMS[0] == 'batteriespeicher') {
+          array_shift($this->PARAMS);
+        }
+        if ($this->PARAMS[0] == 'api') {
+          array_shift($this->PARAMS);
+        }
         $this->ROOT_PARAM = $this->PARAMS[0];
 
         // query params
