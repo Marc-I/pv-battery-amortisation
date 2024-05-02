@@ -11,21 +11,23 @@ import {DashboardFilter, enSeason, batteries} from '../models/dashboard-filter';
 import {Battery} from '../models/battery';
 import {EnergyEntryService} from '../services/energy-entry.service';
 import moment from 'moment/moment';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-    imports: [
-      FormsModule,
-        AreasplineComponent,
-        BatteryTableComponent,
-        FullBatteryPieComponent,
-        HighConsumerComponent,
-        LoadingOverlayComponent,
-        NgForOf,
-        PieComponent,
-        ReactiveFormsModule
-    ],
+  imports: [
+    FormsModule,
+    AreasplineComponent,
+    BatteryTableComponent,
+    FullBatteryPieComponent,
+    HighConsumerComponent,
+    LoadingOverlayComponent,
+    NgForOf,
+    PieComponent,
+    ReactiveFormsModule,
+    RouterLink
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
