@@ -27,10 +27,10 @@ try {
       Response::SUCCESS(Battery::GetBatteries());
       break;
     case 'energy':
-      Response::SUCCESS(Energy::GetEntries($REQUEST->Get_Query('year'), $REQUEST->Get_Query('month')));
+      Response::SUCCESS(Energy::GetEntries($REQUEST->PARAMS[1], $REQUEST->PARAMS[2]));
       break;
     case 'dayenergy':
-      Response::SUCCESS(Energy::GetDayEntries($REQUEST->Get_Query('year'), $REQUEST->Get_Query('month')));
+      Response::SUCCESS(Energy::GetDayEntries($REQUEST->PARAMS[1], $REQUEST->PARAMS[2]));
       break;
     case 'ping':
       RESPONSE::SUCCESS(["servertime" => microtime(true)]);

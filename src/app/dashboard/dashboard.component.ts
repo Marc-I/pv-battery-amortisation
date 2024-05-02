@@ -89,8 +89,8 @@ export class DashboardComponent {
 
     this.label_vergleich = monthentries.map(e => moment(e.Datum).format('MMM YY'));
     this.data_vergleich = [
-      monthentries.map(e => e.PVKummulativ / 12),
-      monthentries.map(e => e.VerbrauchKummulativ / 12)
+      monthentries.map(e => e.PVKumulativ / 12),
+      monthentries.map(e => e.VerbrauchKumulativ / 12)
     ];
 
     this.data_tagnachtvergleich = [

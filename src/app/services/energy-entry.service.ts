@@ -39,7 +39,7 @@ export class EnergyEntryService {
         this._sumValues(res[key], value);
         return res;
       }, {});
-    EnergyEntryService.DayEnergyEntries.forEach(this._kummulateSums);
+    EnergyEntryService.DayEnergyEntries.forEach(this._kumulateSums);
 
     // store monthly data
     energyEntries
@@ -52,7 +52,7 @@ export class EnergyEntryService {
         this._sumValues(res[key], value);
         return res;
       }, {});
-    EnergyEntryService.MonthEnergyEntries.forEach(this._kummulateSums);
+    EnergyEntryService.MonthEnergyEntries.forEach(this._kumulateSums);
 
     EnergyEntryService._energyEntries = energyEntries;
     let oneWeekAgo = moment().subtract(1, 'month');
@@ -69,19 +69,19 @@ export class EnergyEntryService {
     return res;
   };
 
-  private _kummulateSums = (e: DayEnergyEntry|MonthEnergyEntry, i: number, a:DayEnergyEntry[]|MonthEnergyEntry[]) => {
+  private _kumulateSums = (e: DayEnergyEntry|MonthEnergyEntry, i: number, a:DayEnergyEntry[]|MonthEnergyEntry[]) => {
     if (i === 0) {
-      e.BezugKummulativ = e.BezugSumme;
-      e.PVKummulativ = e.PVSumme;
-      e.VerbrauchKummulativ = e.VerbrauchSumme;
-      e.EinspeisungKummulativ = e.EinspeisungSumme;
-      e.PVVerbrauchKummulativ = e.PVVerbrauchSumme;
+      e.BezugKumulativ = e.BezugSumme;
+      e.PVKumulativ = e.PVSumme;
+      e.VerbrauchKumulativ = e.VerbrauchSumme;
+      e.EinspeisungKumulativ = e.EinspeisungSumme;
+      e.PVVerbrauchKumulativ = e.PVVerbrauchSumme;
     } else {
-      e.BezugKummulativ = a[i - 1].BezugKummulativ + e.BezugSumme;
-      e.PVKummulativ = a[i - 1].PVKummulativ + e.PVSumme;
-      e.VerbrauchKummulativ = a[i - 1].VerbrauchKummulativ + e.VerbrauchSumme;
-      e.EinspeisungKummulativ = a[i - 1].EinspeisungKummulativ + e.EinspeisungSumme;
-      e.PVVerbrauchKummulativ = a[i - 1].PVVerbrauchKummulativ + e.PVVerbrauchSumme;
+      e.BezugKumulativ = a[i - 1].BezugKumulativ + e.BezugSumme;
+      e.PVKumulativ = a[i - 1].PVKumulativ + e.PVSumme;
+      e.VerbrauchKumulativ = a[i - 1].VerbrauchKumulativ + e.VerbrauchSumme;
+      e.EinspeisungKumulativ = a[i - 1].EinspeisungKumulativ + e.EinspeisungSumme;
+      e.PVVerbrauchKumulativ = a[i - 1].PVVerbrauchKumulativ + e.PVVerbrauchSumme;
     }
   };
 

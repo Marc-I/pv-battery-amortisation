@@ -6,11 +6,11 @@ export class DayEnergyEntry {
   VerbrauchSumme: number = 0;
   PVVerbrauchSumme: number = 0;
   EinspeisungSumme: number = 0;
-  BezugKummulativ: number = 0;
-  PVKummulativ: number = 0;
-  VerbrauchKummulativ: number = 0;
-  EinspeisungKummulativ: number = 0;
-  PVVerbrauchKummulativ: number = 0;
+  BezugKumulativ: number = 0;
+  PVKumulativ: number = 0;
+  VerbrauchKumulativ: number = 0;
+  EinspeisungKumulativ: number = 0;
+  PVVerbrauchKumulativ: number = 0;
 
   constructor(obj?: any) {
     Object.assign(this, obj);

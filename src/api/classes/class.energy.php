@@ -53,11 +53,11 @@ class Energy
     });
 
     $data = [];
-    $BezugKummulativ = 0;
-    $PVKummulativ = 0;
-    $VerbrauchKummulativ = 0;
-    $EinspeisungKummulativ = 0;
-    $PVVerbrauchKummulativ = 0;
+    $BezugKumulativ = 0;
+    $PVKumulativ = 0;
+    $VerbrauchKumulativ = 0;
+    $EinspeisungKumulativ = 0;
+    $PVVerbrauchKumulativ = 0;
     foreach ($filteredEntries as $energy) {
       $key = substr($energy['Datum'], 0, 10);
       if (!array_key_exists($key, $data)) {
@@ -69,31 +69,31 @@ class Energy
           'VerbrauchSumme' => 0,
           'PVVerbrauchSumme' => 0,
           'EinspeisungSumme' => 0,
-          'BezugKummulativ' => $BezugKummulativ,
-          'PVKummulativ' => $PVKummulativ,
-          'VerbrauchKummulativ' => $VerbrauchKummulativ,
-          'EinspeisungKummulativ' => $EinspeisungKummulativ,
-          'PVVerbrauchKummulativ' => $PVVerbrauchKummulativ,
+          'BezugKumulativ' => $BezugKumulativ,
+          'PVKumulativ' => $PVKumulativ,
+          'VerbrauchKumulativ' => $VerbrauchKumulativ,
+          'EinspeisungKumulativ' => $EinspeisungKumulativ,
+          'PVVerbrauchKumulativ' => $PVVerbrauchKumulativ,
         ];
       }
 
-      $BezugKummulativ += $energy['Bezug'];
-      $PVKummulativ += $energy['PVErtrag'];
-      $VerbrauchKummulativ += $energy['Verbrauch'];
-      $EinspeisungKummulativ += $energy['Einspeisung'];
-      $PVVerbrauchKummulativ += $energy['Verbrauch'] - $energy['Bezug'];
+      $BezugKumulativ += intval($energy['Bezug']);
+      $PVKumulativ += intval($energy['PVErtrag']);
+      $VerbrauchKumulativ += intval($energy['Verbrauch']);
+      $EinspeisungKumulativ += intval($energy['Einspeisung']);
+      $PVVerbrauchKumulativ += intval($energy['Verbrauch']) - intval($energy['Bezug']);
 
-      $data[$key]['NetzSumme'] += $energy['Netz'];
-      $data[$key]['PVSumme'] += $energy['PVErtrag'];
-      $data[$key]['BezugSumme'] += $energy['Bezug'];
-      $data[$key]['VerbrauchSumme'] += $energy['Verbrauch'];
-      $data[$key]['PVVerbrauchSumme'] += $energy['Verbrauch'] - $energy['Bezug'];
-      $data[$key]['EinspeisungSumme'] += $energy['Einspeisung'];
-      $data[$key]['BezugKummulativ'] = $BezugKummulativ;
-      $data[$key]['PVKummulativ'] = $PVKummulativ;
-      $data[$key]['VerbrauchKummulativ'] = $VerbrauchKummulativ;
-      $data[$key]['EinspeisungKummulativ'] = $EinspeisungKummulativ;
-      $data[$key]['PVVerbrauchKummulativ'] = $PVVerbrauchKummulativ;
+      $data[$key]['NetzSumme'] += intval($energy['Netz']);
+      $data[$key]['PVSumme'] += intval($energy['PVErtrag']);
+      $data[$key]['BezugSumme'] += intval($energy['Bezug']);
+      $data[$key]['VerbrauchSumme'] += intval($energy['Verbrauch']);
+      $data[$key]['PVVerbrauchSumme'] += intval($energy['Verbrauch']) - intval($energy['Bezug']);
+      $data[$key]['EinspeisungSumme'] += intval($energy['Einspeisung']);
+      $data[$key]['BezugKumulativ'] = $BezugKumulativ;
+      $data[$key]['PVKumulativ'] = $PVKumulativ;
+      $data[$key]['VerbrauchKumulativ'] = $VerbrauchKumulativ;
+      $data[$key]['EinspeisungKumulativ'] = $EinspeisungKumulativ;
+      $data[$key]['PVVerbrauchKumulativ'] = $PVVerbrauchKumulativ;
     }
 
     return array_values($data);

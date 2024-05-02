@@ -1,0 +1,320 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Documentation",
+    "description": "",
+    "contact": {
+      "email": "marc-alexander.iten@fhgr.ch"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4200/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "base",
+      "description": "general operations"
+    },
+    {
+      "name": "batteries",
+      "description": "informations about different available batteries"
+    },
+    {
+      "name": "energy",
+      "description": "energy data"
+    }
+  ],
+  "paths": {
+    "/ping": {
+      "get": {
+        "tags": [
+          "base"
+        ],
+        "summary": "Ping vom Server",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ping"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batteries": {
+      "get": {
+        "tags": [
+          "batteries"
+        ],
+        "summary": "Gibt alle PV-Speicherbatterien zurück",
+        "description": "Die Speicherbatterien werden als Array zurückgegeben",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Battery"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/energy/{year}/{month}": {
+      "get": {
+        "tags": [
+          "energy"
+        ],
+        "summary": "Energiedaten der PV-Anlage",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Jahr",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "description": "Monat",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Energy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dayenergy/{year}/{month}": {
+      "get": {
+        "tags": [
+          "energy"
+        ],
+        "summary": "Energiedaten der PV-Anlage auf Tagesdaten zusammengekürzt",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Jahr",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "description": "Monat",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayEnergy"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Ping": {
+        "description": "Ping",
+        "type": "object",
+        "readOnly": true,
+        "example": "{\n  \"response\": {\n    \"servertime\": 1714653611.581739\n  }\n}"
+      },
+      "Battery": {
+        "description": "Battery",
+        "type": "object",
+        "properties": {
+          "caption": {
+            "type": "string",
+            "description": "Name der Batterie"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32",
+            "description": "aktueller Füllstand der Batterie (idR = 0)"
+          },
+          "max": {
+            "type": "integer",
+            "format": "int32",
+            "description": "maximale Kapazität der Batterie"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Preis der Batterie in CHF"
+          },
+          "savings": {
+            "type": "integer",
+            "format": "int32",
+            "description": "gespeicherte Energie in kWh (idR = 0)"
+          }
+        },
+        "readOnly": true,
+        "example": "{\n      \"caption\": \"GreenCell PowerNest\",\n      \"capacity\": 0,\n      \"max\": 5000,\n      \"price\": 1569,\n      \"savings\": 0\n    }"
+      },
+      "Energy": {
+        "description": "Energy",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EnergyEntry"
+        },
+        "readOnly": true,
+        "example": "{\"response\": {\n        \"61920\": {\n            \"Datum\": \"2024-02-01 00:00:00\",\n            \"PVErtrag\": \"0\",\n            \"Netz\": \"274\",\n            \"Bezug\": \"274\",\n            \"Einspeisung\": 0,\n            \"Verbrauch\": \"274\"\n        }\n  }\n}"
+      },
+      "EnergyEntry": {
+        "description": "EnergyEntry",
+        "type": "object",
+        "properties": {
+          "Datum": {
+            "type": "string",
+            "description": "Datum und Uhrzeit des Eintrags"
+          },
+          "PVErtrag": {
+            "type": "integer",
+            "format": "int32",
+            "description": "PV-Ertrag in kWh"
+          },
+          "Netz": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Interaktion mit dem Stromnetz in kWh"
+          },
+          "Bezug": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Bezug aus dem Netz in kWh"
+          },
+          "Einspeisung": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Einspeisung ins Netz in kWh"
+          },
+          "Verbrauch": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Verbrauch im Haus in kWh"
+          }
+        }
+      },
+      "DayEnergy": {
+        "description": "DayEnergy",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DayEnergyEntry"
+        },
+        "readOnly": true,
+        "example": "{\n  \"response\": [\n    {\n      \"Datum\": \"2024-03-01 00:00:00\",\n      \"NetzSumme\": 510408,\n      \"PVSumme\": 94890,\n      \"BezugSumme\": 551837,\n      \"VerbrauchSumme\": 605298,\n      \"PVVerbrauchSumme\": 53461,\n      \"EinspeisungSumme\": 41429,\n      \"BezugKumulativ\": 551837,\n      \"PVKumulativ\": 94890,\n      \"VerbrauchKumulativ\": 605298,\n      \"EinspeisungKumulativ\": 41429,\n      \"PVVerbrauchKumulativ\": 53461\n    }\n  ]\n}"
+      },
+      "DayEnergyEntry": {
+        "description": "DayEnergyEntry",
+        "type": "object",
+        "properties": {
+          "Datum": {
+            "type": "string",
+            "description": "Datum und Uhrzeit des Eintrags"
+          },
+          "NetzSumme": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Netz-Bewegungen des Tages in kWh"
+          },
+          "PVSumme": {
+            "type": "integer",
+            "format": "int32",
+            "description": "PV-Ertrag des Tages in kWh"
+          },
+          "BezugSumme": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Bezug aus dem Netz in kWh"
+          },
+          "VerbrauchSumme": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Verbrauch im Haus in kWh"
+          },
+          "PVVerbrauchSumme": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Eigenverbrauch des PV-Stroms in kWh"
+          },
+          "EinspeisungSumme": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Netz-Einspeisung in kWh"
+          },
+          "BezugKumulativ": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Netzbezug über den Monat kumuliert in kWh"
+          },
+          "PVKumulativ": {
+            "type": "integer",
+            "format": "int32",
+            "description": "PV Ertrag über den Monat kumuliert in kWh"
+          },
+          "VerbrauchKumulativ": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Verbrauch im Haus über den Monat kumuliert in kWh"
+          },
+          "EinspeisungKumulativ": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Netz-Einspeisung über den Monat kumuliert in kWh"
+          },
+          "PVVerbrauchKumulativ": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Eigenverbrauch des PV-Stroms über den Monat kumuliert in kWh"
+          }
+        }
+      }
+    }
+  }
+}
