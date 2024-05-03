@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1', 'localhost']) || strpos($_SERVER['REMOTE_ADDR'], 'localhost:') === 0) {
   header("Access-Control-Allow-Origin: *");
   header('Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS');
-  header('Content-Type: application/json');
   header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 }
+header('Content-Type: application/json');
 include_once('autoload.php');
 
 // create request object
@@ -27,7 +27,11 @@ try {
       Response::SUCCESS(Battery::GetBatteries());
       break;
     case 'energy':
-      Response::SUCCESS(Energy::GetEntries($REQUEST->PARAMS[1], $REQUEST->PARAMS[2]));
+      if ($REQUEST->PARAMS[1] == 'overproduction') {
+        Response::SUCCESS(Energy::GetOverproduction($REQUEST->PARAMS[2]));
+      } else {
+        Response::SUCCESS(Energy::GetEntries($REQUEST->PARAMS[1], $REQUEST->PARAMS[2]));
+      }
       break;
     case 'dayenergy':
       Response::SUCCESS(Energy::GetDayEntries($REQUEST->PARAMS[1], $REQUEST->PARAMS[2]));
@@ -38,7 +42,7 @@ try {
       break;
     default:
       Log::Write('index.php - 404', $REQUEST);
-      RESPONSE::ERROR_404('API Endpoint "'.$REQUEST->ROOT_PARAM.'" not found');
+      RESPONSE::ERROR_404('API Endpoint "' . $REQUEST->ROOT_PARAM . '" not found');
   }
 } catch (Exception $ex) {
   Log::Write('index.php - try-catch-error', $ex);

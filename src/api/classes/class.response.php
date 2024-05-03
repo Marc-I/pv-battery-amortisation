@@ -1,91 +1,108 @@
 <?php
 
-class RESPONSE {
+class RESPONSE
+{
 
-    /**
-     * writes standardized success response
-     * @param $data
-     * @return void
-     */
-    static function SUCCESS($data) {
-        global $REQUEST;
-        Log::Write('RESPONSE SUCCESS', $data, true);
+  /**
+   * writes standardized success response
+   * @param $data
+   * @return void
+   */
+  static function SUCCESS($data)
+  {
+    global $REQUEST;
+    Log::Write('RESPONSE SUCCESS', $data, true);
 
-        $response['response'] = $data;
-        if ($REQUEST->Has_Query('debug')) {
-            $response['servertime'] = microtime(true);
-            $response['request'] = $REQUEST;
-        }
-        echo json_encode($response);
+    $response['response'] = $data;
+    if (isset($REQUEST->DATA) && $REQUEST->DATA['request']) {
+      $response['request'] = $REQUEST->DATA['request'];
     }
-
-    /**
-     * generic error message
-     * @param $error_code
-     * @param $error_text
-     * @param $msg
-     * @return void
-     */
-    static function ERROR($error_code, $error_text, $msg = null) {
-        global $REQUEST;
-        Log::Write($error_code . ' ' . $error_text . ' - ' . $msg, $REQUEST);
-        echo self::create_error_page($error_code, $error_text, $msg);
-        header(implode(' ', array_filter([
-            $_SERVER['SERVER_PROTOCOL'],
-            $error_code,
-            $error_text,
-            (isset($msg) && $msg ? '-' : null),
-            $msg
-        ])));
-        http_response_code($error_code);
-        exit();
+    if (isset($REQUEST->DATA) && $REQUEST->DATA['frontendStart']) {
+      $response['frontendStart'] = $REQUEST->DATA['frontendStart'];
     }
+    $response['backendStart'] = $REQUEST->REQUEST_START;
+    $response['backendEnd'] = microtime(true);
 
-    /**
-     * Bad Request Error
-     * @param $msg
-     * @return void
-     */
-    static function ERROR_400($msg = null) {
-        self::ERROR(400, 'Bad Request', $msg);
+    if ($REQUEST->Has_Query('debug')) {
+      $response['servertime'] = microtime(true);
+      $response['request'] = $REQUEST;
     }
+    echo json_encode($response);
+  }
 
-    /**
-     * Access Forbidden Error
-     * @param $msg
-     * @return void
-     */
-    static function ERROR_403($msg = null) {
-        self::ERROR(403, 'Access Forbidden', $msg);
-    }
+  /**
+   * generic error message
+   * @param $error_code
+   * @param $error_text
+   * @param $msg
+   * @return void
+   */
+  static function ERROR($error_code, $error_text, $msg = null)
+  {
+    global $REQUEST;
+    Log::Write($error_code . ' ' . $error_text . ' - ' . $msg, $REQUEST);
+    echo self::create_error_page($error_code, $error_text, $msg);
+    header(implode(' ', array_filter([
+      $_SERVER['SERVER_PROTOCOL'],
+      $error_code,
+      $error_text,
+      (isset($msg) && $msg ? '-' : null),
+      $msg
+    ])));
+    http_response_code($error_code);
+    exit();
+  }
 
-    /**
-     * Page not Found Error
-     * @param $msg
-     * @return void
-     */
-    static function ERROR_404($msg = null) {
-        self::ERROR(404, 'Page not Found', $msg);
-    }
+  /**
+   * Bad Request Error
+   * @param $msg
+   * @return void
+   */
+  static function ERROR_400($msg = null)
+  {
+    self::ERROR(400, 'Bad Request', $msg);
+  }
 
-    /**
-     * Server Error Error
-     * @param $msg
-     * @return void
-     */
-    static function ERROR_500($msg = null) {
-        self::ERROR(500, 'Server Error', $msg);
-    }
+  /**
+   * Access Forbidden Error
+   * @param $msg
+   * @return void
+   */
+  static function ERROR_403($msg = null)
+  {
+    self::ERROR(403, 'Access Forbidden', $msg);
+  }
 
-    /**
-     * create html website for error
-     * @param $error_code
-     * @param $error_text
-     * @param $error_msg
-     * @return string
-     */
-    private static function create_error_page($error_code, $error_text, $error_msg) {
-        return '<!doctype html>
+  /**
+   * Page not Found Error
+   * @param $msg
+   * @return void
+   */
+  static function ERROR_404($msg = null)
+  {
+    self::ERROR(404, 'Page not Found', $msg);
+  }
+
+  /**
+   * Server Error Error
+   * @param $msg
+   * @return void
+   */
+  static function ERROR_500($msg = null)
+  {
+    self::ERROR(500, 'Server Error', $msg);
+  }
+
+  /**
+   * create html website for error
+   * @param $error_code
+   * @param $error_text
+   * @param $error_msg
+   * @return string
+   */
+  private static function create_error_page($error_code, $error_text, $error_msg)
+  {
+    return '<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -130,5 +147,5 @@ class RESPONSE {
 <p>' . $error_msg . '</p>
 </body>
 </html>';
-    }
+  }
 }

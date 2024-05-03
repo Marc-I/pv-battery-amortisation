@@ -4,14 +4,15 @@ import {BatteryTableComponent} from '../components/battery-table/battery-table.c
 import {FullBatteryPieComponent} from '../components/full-battery-pie/full-battery-pie.component';
 import {HighConsumerComponent} from '../components/high-consumer/high-consumer.component';
 import {LoadingOverlayComponent} from '../components/loading-overlay/loading-overlay.component';
-import {NgForOf} from '@angular/common';
+import {DecimalPipe, NgForOf} from '@angular/common';
 import {PieComponent} from '../components/charts/pie/pie.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {DashboardFilter, enSeason, batteries} from '../models/dashboard-filter';
+import {DashboardFilter, enSeason} from '../models/dashboard-filter';
 import {Battery} from '../models/battery';
 import {EnergyEntryService} from '../services/energy-entry.service';
 import moment from 'moment/moment';
 import {RouterLink} from '@angular/router';
+import {BatteryService} from '../services/battery.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +27,8 @@ import {RouterLink} from '@angular/router';
     NgForOf,
     PieComponent,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    DecimalPipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -42,7 +44,7 @@ export class DashboardComponent {
   }
 
   filter: DashboardFilter = new DashboardFilter();
-  batteries: Battery[] = batteries;
+  batteries: Battery[] = BatteryService.Batteries;
 
   title_vergleich = 'PV-Erzeugung und Verbrauch';
   label_vergleich: string[] = [];
@@ -63,31 +65,14 @@ export class DashboardComponent {
     this.calcValues();
     this.filter = new DashboardFilter(this.filter);
   }
-  // changeSeason() {
-  //     switch (this.filter.season) {
-  //         case enSeason.YEAR: this.filter.season = enSeason.SUMMER; break;
-  //         case enSeason.SUMMER: this.filter.season = enSeason.WINTER; break;
-  //         case enSeason.WINTER: this.filter.season = enSeason.YEAR; break;
-  //         default: this.filter.season = enSeason.YEAR;
-  //     }
-  //     this.calcValues();
-  //     this.filter = new DashboardFilter(this.filter);
-  // }
 
   changeBattery() {
     this.filter = new DashboardFilter(this.filter);
   }
 
   calcValues() {
-    let filter = (e: { Datum: Date }) => true;
-    if (this.filter.season === enSeason.WINTER) {
-      filter = (e: { Datum: Date }) => e.Datum.getMonth() <= 2 || e.Datum.getMonth() >= 9;
-    }
-    if (this.filter.season === enSeason.SUMMER) {
-      filter = (e: { Datum: Date }) => e.Datum.getMonth() > 2 && e.Datum.getMonth() < 9;
-    }
-    let monthentries = EnergyEntryService.MonthEnergyEntries.filter(filter);
-    let dayentries = EnergyEntryService.DayEnergyEntries.filter(filter);
+    let monthentries = EnergyEntryService.MonthEnergyEntries.filter(this.filter.seasonFilter);
+    let dayentries = EnergyEntryService.DayEnergyEntries.filter(this.filter.seasonFilter);
 
     this.label_vergleich = monthentries.map(e => moment(e.Datum).format('MMM YY'));
     this.data_vergleich = [

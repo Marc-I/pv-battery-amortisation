@@ -99,4 +99,59 @@ class Energy
     return array_values($data);
   }
 
+  public static function GetOverproduction($season)
+  {
+    $dayentries = [];
+    switch ($season) {
+      case 'Sommer23':
+        $dayentries = array_merge(
+          $dayentries,
+          self::GetDayEntries(2023, 7),
+          self::GetDayEntries(2023, 8),
+          self::GetDayEntries(2023, 9)
+        );
+        break;
+      case 'Winter24':
+        $dayentries = array_merge(
+          $dayentries,
+          self::GetDayEntries(2023, 10),
+          self::GetDayEntries(2023, 11),
+          self::GetDayEntries(2023, 12),
+          self::GetDayEntries(2024, 1),
+          self::GetDayEntries(2024, 2),
+          self::GetDayEntries(2024, 3)
+        );
+        break;
+      case 'Sommer24':
+        $dayentries = array_merge(
+          $dayentries,
+          self::GetDayEntries(2024, 4),
+          self::GetDayEntries(2024, 5),
+          self::GetDayEntries(2024, 6),
+          self::GetDayEntries(2024, 7),
+          self::GetDayEntries(2024, 8),
+          self::GetDayEntries(2024, 9)
+        );
+        break;
+      default:
+        for ($year = 2023; $year <= date('Y'); $year++) {
+          for ($month = 1; $month <= 12; $month++) {
+            $dayentries = array_merge( $dayentries, self::GetDayEntries($year, $month));
+          }
+        }
+    }
+    $days = 0;
+    $overprodution = 0;
+    foreach ($dayentries as $day) {
+      $days++;
+      if ($day['NetzSumme'] < 0) {
+        $overprodution++;
+      }
+    }
+    return [
+      'days' => $days,
+      'overproduction' => $overprodution,
+      'underproduction' => $days - $overprodution
+    ];
+  }
 }

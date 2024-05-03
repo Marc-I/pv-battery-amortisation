@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {environment} from '../../environments/environment';
 import SwaggerUI from 'swagger-ui';
 import spec from './openapi.json';
+import {PingService} from '../services/ping.service';
 
 @Component({
   selector: 'app-api-documentations',
@@ -18,6 +19,10 @@ import spec from './openapi.json';
 export class ApiDocumentationsComponent implements AfterContentInit {
   @ViewChild('swaggerui',{static: true}) custApiDocElement: ElementRef | undefined;
 
+  constructor() {
+    PingService.Ping();
+  }
+
   ngAfterContentInit() {
     spec.servers[0].url = environment.restApiServer;
     const ui = SwaggerUI({
@@ -27,5 +32,6 @@ export class ApiDocumentationsComponent implements AfterContentInit {
 
     // @ts-ignore
     window.ui = ui
+    PingService.Ping();
   }
 }

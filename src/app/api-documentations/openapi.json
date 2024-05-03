@@ -46,6 +46,24 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "base"
+        ],
+        "summary": "Ping vom Server (mit zusätzlichen Infos)",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ping"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/batteries": {
@@ -114,6 +132,44 @@
         }
       }
     },
+    "/energy/overproduction/{season}": {
+      "get": {
+        "tags": [
+          "energy"
+        ],
+        "summary": "Tage mit Überproduktion",
+        "description": "Es wird der Anteil von Tagen,an denen mehr Energie generiert als verbraucht wurde,berechnet und ausgegeben.",
+        "parameters": [
+          {
+            "name": "season",
+            "in": "path",
+            "required": true,
+            "description": "Saison",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Sommer23",
+                "Winter24",
+                "Sommer24",
+                "Ganzes Jahr"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnergyOverproduction"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/dayenergy/{year}/{month}": {
       "get": {
         "tags": [
@@ -159,11 +215,47 @@
   },
   "components": {
     "schemas": {
+      "Response": {
+        "description": "Response,wrapping all responses",
+        "type": "object",
+        "properties": {
+          "backendEnd": {
+            "type": "integer",
+            "format": "float",
+            "description": "Antwort auf dem Server vor absenden"
+          },
+          "backendStart": {
+            "type": "integer",
+            "format": "float",
+            "description": "Start der Anfrage im Backend / Ankunft auf Server"
+          },
+          "frontendEnd": {
+            "type": "integer",
+            "format": "float",
+            "description": "Antwort im Frontend angekommen / Verlassen des API Services"
+          },
+          "frontendStart": {
+            "type": "integer",
+            "format": "float",
+            "description": "Start der Anfrage im Frontend / Aufruf des API Services"
+          },
+          "response": {
+            "type": "object",
+            "description": "Antwort"
+          },
+          "request": {
+            "type": "object",
+            "description": "ursprüngliche Anfrage"
+          }
+        },
+        "readOnly": true,
+        "example": "{\"servertime\": 1714751361.61446},\"backendStart\": 1714751361.613921,\"backendEnd\": 1714751361.614466}"
+      },
       "Ping": {
         "description": "Ping",
         "type": "object",
         "readOnly": true,
-        "example": "{\n  \"response\": {\n    \"servertime\": 1714653611.581739\n  }\n}"
+        "example": "{\"servertime\": 1714653611.581739}"
       },
       "Battery": {
         "description": "Battery",
@@ -195,7 +287,7 @@
           }
         },
         "readOnly": true,
-        "example": "{\n      \"caption\": \"GreenCell PowerNest\",\n      \"capacity\": 0,\n      \"max\": 5000,\n      \"price\": 1569,\n      \"savings\": 0\n    }"
+        "example": "{\"caption\": \"GreenCell PowerNest\",\"capacity\": 0,\"max\": 5000,\"price\": 1569,\"savings\": 0 }"
       },
       "Energy": {
         "description": "Energy",
@@ -204,7 +296,7 @@
           "$ref": "#/components/schemas/EnergyEntry"
         },
         "readOnly": true,
-        "example": "{\"response\": {\n        \"61920\": {\n            \"Datum\": \"2024-02-01 00:00:00\",\n            \"PVErtrag\": \"0\",\n            \"Netz\": \"274\",\n            \"Bezug\": \"274\",\n            \"Einspeisung\": 0,\n            \"Verbrauch\": \"274\"\n        }\n  }\n}"
+        "example": "{\"61920\": {\"Datum\": \"2024-02-01 00:00:00\",\"PVErtrag\": \"0\",\"Netz\": \"274\",\"Bezug\": \"274\",\"Einspeisung\": 0,\"Verbrauch\": \"274\" }}"
       },
       "EnergyEntry": {
         "description": "EnergyEntry",
@@ -241,6 +333,26 @@
           }
         }
       },
+      "EnergyOverproduction": {
+        "description": "Overproduction",
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "overproduction": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "underproduction": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "readOnly": true,
+        "example": "{\"days\": 92,\"overproduction\": 76,\"underproduction\": 16}"
+      },
       "DayEnergy": {
         "description": "DayEnergy",
         "type": "array",
@@ -248,7 +360,7 @@
           "$ref": "#/components/schemas/DayEnergyEntry"
         },
         "readOnly": true,
-        "example": "{\n  \"response\": [\n    {\n      \"Datum\": \"2024-03-01 00:00:00\",\n      \"NetzSumme\": 510408,\n      \"PVSumme\": 94890,\n      \"BezugSumme\": 551837,\n      \"VerbrauchSumme\": 605298,\n      \"PVVerbrauchSumme\": 53461,\n      \"EinspeisungSumme\": 41429,\n      \"BezugKumulativ\": 551837,\n      \"PVKumulativ\": 94890,\n      \"VerbrauchKumulativ\": 605298,\n      \"EinspeisungKumulativ\": 41429,\n      \"PVVerbrauchKumulativ\": 53461\n    }\n  ]\n}"
+        "example": "[ {\"Datum\": \"2024-03-01 00:00:00\",\"NetzSumme\": 510408,\"PVSumme\": 94890,\"BezugSumme\": 551837,\"VerbrauchSumme\": 605298,\"PVVerbrauchSumme\": 53461,\"EinspeisungSumme\": 41429,\"BezugKumulativ\": 551837,\"PVKumulativ\": 94890,\"VerbrauchKumulativ\": 605298,\"EinspeisungKumulativ\": 41429,\"PVVerbrauchKumulativ\": 53461 } ]"
       },
       "DayEnergyEntry": {
         "description": "DayEnergyEntry",

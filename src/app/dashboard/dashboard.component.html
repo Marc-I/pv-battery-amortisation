@@ -9,8 +9,9 @@
     <b>Zeitraum</b><br>
     <select [(ngModel)]="season" (change)="changeSeasonSelect()">
       <option value="Ganzes Jahr">alle Daten</option>
-      <option value="Sommer">Jul '23 - Sep '23</option>
-      <option value="Winter">Oct '23 - Mar '24</option>
+      <option value="Sommer23">Jul '23 - Sep '23</option>
+      <option value="Winter24">Oct '23 - Mar '24</option>
+      <option value="Sommer24">Apr '24 - Sep '24</option>
     </select>
     <!--    <button (click)="changeSeason()"></button>-->
     <!--    <p>{{filter.season}}</p>-->
@@ -18,7 +19,7 @@
   <div class="battery">
     <b>Batterie</b><br>
     <select [(ngModel)]="filter.battery" (change)="changeBattery()">
-      <option *ngFor="let bat of batteries" [ngValue]="bat">{{bat.caption}}</option>
+      <option *ngFor="let bat of batteries" [ngValue]="bat">{{bat.caption}} ({{bat.max / 1000 | number}} kWh)</option>
     </select>
   </div>
   <div class="efficency">
