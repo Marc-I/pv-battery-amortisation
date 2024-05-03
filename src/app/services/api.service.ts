@@ -24,7 +24,6 @@ export class ApiService {
       },
       body: JSON.stringify(request)
     });
-    console.log('request', request);
     const result: iResponse<T, U> = await response.json();
     result.frontendEnd = Date.now();
     return result;

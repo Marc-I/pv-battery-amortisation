@@ -4,6 +4,8 @@ import {ApiService} from './api.service';
 import {DayEnergyEntry} from '../models/day-energy-entry';
 import {MonthEnergyEntry} from '../models/month-energy-entry';
 import moment from 'moment';
+import {enSeason} from '../models/dashboard-filter';
+import {iOverproduction} from '../models/overproduction';
 
 @Injectable({
   providedIn: 'root'
@@ -84,5 +86,10 @@ export class EnergyEntryService {
       e.PVVerbrauchKumulativ = a[i - 1].PVVerbrauchKumulativ + e.PVVerbrauchSumme;
     }
   };
+
+  public async getOverproduction(season: enSeason) {
+    const response = await this._apiService.post<null, iOverproduction>('energy/overproduction/' + season, null);
+    return response.response;
+  }
 
 }

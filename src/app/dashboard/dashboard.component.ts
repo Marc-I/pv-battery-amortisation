@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AreasplineComponent} from '../components/charts/areaspline/areaspline.component';
 import {BatteryTableComponent} from '../components/battery-table/battery-table.component';
 import {FullBatteryPieComponent} from '../components/full-battery-pie/full-battery-pie.component';
@@ -55,14 +55,15 @@ export class DashboardComponent {
   label_tagnachtvergleich: string[] = ['Überproduktion', 'Unterproduktion'];
   data_tagnachtvergleich: any[] = [];
 
-  constructor() {
-    this.calcValues();
+  constructor(private _energyService: EnergyEntryService) {
+    this.calcValues().then();
   }
 
   season: enSeason = enSeason.YEAR;
-  changeSeasonSelect() {
+
+  async changeSeasonSelect() {
     this.filter.season = this.season;
-    this.calcValues();
+    await this.calcValues();
     this.filter = new DashboardFilter(this.filter);
   }
 
@@ -70,7 +71,7 @@ export class DashboardComponent {
     this.filter = new DashboardFilter(this.filter);
   }
 
-  calcValues() {
+  async calcValues() {
     let monthentries = EnergyEntryService.MonthEnergyEntries.filter(this.filter.seasonFilter);
     let dayentries = EnergyEntryService.DayEnergyEntries.filter(this.filter.seasonFilter);
 
@@ -80,10 +81,8 @@ export class DashboardComponent {
       monthentries.map(e => e.VerbrauchKumulativ / 12)
     ];
 
-    this.data_tagnachtvergleich = [
-      dayentries.filter(e => e.PVSumme > e.VerbrauchSumme).length,
-      dayentries.filter(e => e.PVSumme <= e.VerbrauchSumme).length
-    ];
+    const production = await this._energyService.getOverproduction(this.filter.season);
+    this.data_tagnachtvergleich = [production.overproduction, production.underproduction];
 
     this.update = true;
   }
