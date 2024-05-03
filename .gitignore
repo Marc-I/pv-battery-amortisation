@@ -43,5 +43,5 @@ Thumbs.db
 
 
 
-api/log/*
+src/api/log/*
 src/assets/data/*
