@@ -24,7 +24,11 @@ $REQUEST = new REQUEST();
 try {
   switch ($REQUEST->ROOT_PARAM) {
     case 'batteries':
-      Response::SUCCESS(Battery::GetBatteries());
+      if (!isset($REQUEST->PARAMS[1]) || !$REQUEST->PARAMS[1]) {
+        Response::SUCCESS(Battery::GetBatteries());
+      } else {
+        Response::SUCCESS(Battery::CalculateAmortisation($REQUEST->PARAMS[1], $REQUEST->PARAMS[2]));
+      }
       break;
     case 'energy':
       if ($REQUEST->PARAMS[1] == 'overproduction') {

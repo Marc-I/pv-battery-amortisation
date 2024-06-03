@@ -42,4 +42,45 @@ class Battery
       new Battery('400 kWh', 400000, 100000)
     );
   }
+
+  public static function CalculateAmortisation($bat_capacity, $bat_efficiency)
+  {
+    $current_capacity = 0;
+    $saved = 0;
+    $lost = 0;
+    $days_full_battery = [];
+
+    $data = Energy::GetAllData();
+
+    $days = array_unique(array_map(function ($e) {
+      return substr($e['Datum'], 0, 10);
+    }, $data));
+
+    foreach ($data as $entry) {
+      if ($entry['Einspeisung'] > 0 && $current_capacity < $bat_capacity) {
+        $add_energy = min($bat_capacity - $current_capacity, $entry['Einspeisung'] / 1200 * $bat_efficiency);
+        $current_capacity += $add_energy;
+        $lost += $add_energy / $bat_efficiency * 100;
+      }
+      if ($entry['Bezug'] > 0 && $current_capacity > 0) {
+        $use_energy = min($current_capacity, $entry['Bezug'] / 12);
+        $current_capacity -= $use_energy;
+        $saved += $use_energy;
+      }
+      if ($current_capacity == $bat_capacity) {
+        $days_full_battery[substr($entry['Datum'], 0, 10)] = 1;
+      }
+    }
+
+
+    return [
+      'saved' => $saved,
+      'lost' => $lost,
+      'days' => count($days),
+      'entries' => count($data),
+      'days_with_full_battery' => count($days_full_battery),
+//      'full_battery_days' => array_slice($days_full_battery, count($days_full_battery) - 50),
+//      'capacity' => $current_capacity
+    ];
+  }
 }

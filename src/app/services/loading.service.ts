@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Component, EventEmitter, Inject, Injectable} from '@angular/core';
 import {v4 as uuidv4} from 'uuid';
 import {timestamp} from 'rxjs';
 

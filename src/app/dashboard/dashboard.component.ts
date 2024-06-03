@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AreasplineComponent} from '../components/charts/areaspline/areaspline.component';
 import {BatteryTableComponent} from '../components/battery-table/battery-table.component';
 import {FullBatteryPieComponent} from '../components/full-battery-pie/full-battery-pie.component';
@@ -13,6 +13,8 @@ import {EnergyEntryService} from '../services/energy-entry.service';
 import moment from 'moment/moment';
 import {RouterLink} from '@angular/router';
 import {BatteryService} from '../services/battery.service';
+import {LoadingService} from '../services/loading.service';
+import {dirname} from '@angular/compiler-cli';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +35,7 @@ import {BatteryService} from '../services/battery.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   private _update = true;
   get update(): boolean {
     return this._update;
@@ -49,22 +51,30 @@ export class DashboardComponent {
   title_vergleich = 'PV-Erzeugung und Verbrauch';
   label_vergleich: string[] = [];
   serienames_vergleich: string[] = ['Erzeugung', 'Verbrauch'];
-  data_vergleich: number[][] = [];
+  data_vergleich: number[][] = [[], []];
 
   title_tagnachtvergleich = 'Tage mit Überproduktion';
   label_tagnachtvergleich: string[] = ['Überproduktion', 'Unterproduktion'];
-  data_tagnachtvergleich: any[] = [];
+  data_tagnachtvergleich: any[] = [1, 1];
 
   constructor(private _energyService: EnergyEntryService) {
-    this.calcValues().then();
+  }
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.changeSeasonSelect().then();
+    }, 10);
   }
 
   season: enSeason = enSeason.YEAR;
 
   async changeSeasonSelect() {
+    LoadingService.start_async(this.constructor.name + '_changes');
     this.filter.season = this.season;
-    await this.calcValues();
     this.filter = new DashboardFilter(this.filter);
+    await this.calcValues();
+    this.update = true;
+    LoadingService.stop_async(this.constructor.name + '_changes');
   }
 
   changeBattery() {
@@ -73,7 +83,6 @@ export class DashboardComponent {
 
   async calcValues() {
     let monthentries = EnergyEntryService.MonthEnergyEntries.filter(this.filter.seasonFilter);
-    let dayentries = EnergyEntryService.DayEnergyEntries.filter(this.filter.seasonFilter);
 
     this.label_vergleich = monthentries.map(e => moment(e.Datum).format('MMM YY'));
     this.data_vergleich = [
@@ -83,7 +92,5 @@ export class DashboardComponent {
 
     const production = await this._energyService.getOverproduction(this.filter.season);
     this.data_tagnachtvergleich = [production.overproduction, production.underproduction];
-
-    this.update = true;
   }
 }

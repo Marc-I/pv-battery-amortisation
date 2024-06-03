@@ -4,6 +4,13 @@ class Energy
 {
   private static $_data;
 
+  public static function GetAllData() {
+    if (!self::$_data || count(self::$_data) == 0) {
+      self::_getEntries();
+    }
+    return self::$_data;
+  }
+
   private static function _getEntries()
   {
     // alle CSV auslesen
@@ -102,6 +109,8 @@ class Energy
   public static function GetOverproduction($season)
   {
     $dayentries = [];
+    $days = 0;
+    $overprodution = 0;
     switch ($season) {
       case 'Sommer23':
         $dayentries = array_merge(
@@ -134,14 +143,28 @@ class Energy
         );
         break;
       default:
-        for ($year = 2023; $year <= date('Y'); $year++) {
-          for ($month = 1; $month <= 12; $month++) {
-            $dayentries = array_merge( $dayentries, self::GetDayEntries($year, $month));
+        $dayuse = 0;
+        $dayproduction = 0;
+        $lastdate = '2023-07-01';
+
+        $data = Energy::GetAllData();
+
+        foreach ($data as $entry) {
+          $date = substr($entry['Datum'], 0, 10);
+          if ($date != $lastdate) {
+            if ($dayuse <= $dayproduction) {
+              $overprodution++;
+            }
+            $lastdate = $date;
+            $dayuse = 0;
+            $dayproduction = 0;
+            $days++;
           }
+
+          $dayuse += (int)$entry['Verbrauch'];
+          $dayproduction += (int)$entry['PVErtrag'];
         }
     }
-    $days = 0;
-    $overprodution = 0;
     foreach ($dayentries as $day) {
       $days++;
       if ($day['NetzSumme'] < 0) {

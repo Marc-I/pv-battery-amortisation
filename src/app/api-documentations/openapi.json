@@ -90,6 +90,52 @@
         }
       }
     },
+    "/batteries/{capacity}/{efficiency}": {
+      "get": {
+        "tags": [
+          "batteries"
+        ],
+        "summary": "Gibt die eingesparte Energie, sowie die verlorene Energie zu einer Kapazität zurück.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "capacity",
+            "in": "path",
+            "required": true,
+            "description": "Batterie-Kapazität in kW (beispielsweise «5000» kW)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "efficiency",
+            "in": "path",
+            "required": true,
+            "description": "Batterie-Effizienz in % (beispielsweise «85» %)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AmortisationCalculation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/energy/{year}/{month}": {
       "get": {
         "tags": [
@@ -426,6 +472,38 @@
             "description": "Eigenverbrauch des PV-Stroms über den Monat kumuliert in kWh"
           }
         }
+      },
+      "AmortisationCalculation": {
+        "description": "Calculation of the amortisation",
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "integer",
+            "format": "int32",
+            "description": "eingesparte Energie"
+          },
+          "lost":  {
+            "type": "integer",
+            "format": "int32",
+            "description": "Energie, die nicht ins Netz eingespiesen wurde"
+          },
+          "days":  {
+            "type": "integer",
+            "format": "int32",
+            "description": "Anzahl Tage, die berücksichtigt wurden"
+          },
+          "entries":  {
+            "type": "integer",
+            "format": "int32",
+            "description": "Anzahl berechneter Einzel-Einträge"
+          },
+          "days_with_full_battery":  {
+            "type": "integer",
+            "format": "int32",
+            "description": "Tage, an denen die Batterie vollständig geladen werden konnte"
+          }
+        },
+        "readOnly": true
       }
     }
   }
